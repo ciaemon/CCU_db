@@ -21,7 +21,7 @@ function searchNew() {
   var query = SpreadsheetApp.getUi().prompt('Введите запрос для поиска по ' + field).getResponseText();
   if (isArchivedSearch()) {
     console.log('Start archived search');
-    var files = DriveApp.getFolderById(completedFolderId).getFiles();
+    var files = DriveApp.getFolderById(completedFolderId).getFilesByType(MimeType.GOOGLE_SHEETS)
     while (files.hasNext()) {
       var fileId = files.next().getId();
       console.log('Analyzing id ' + fileId);
@@ -68,5 +68,4 @@ function displayResults(resultIds) {
 
 function searchAndDisplay() {
   displayResults(searchNew());
-  
 }

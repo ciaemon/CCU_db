@@ -1,7 +1,7 @@
 var connectionName = '37.195.45.169:3306';
-var rootPwd = 'mySQLForgot12';
+var rootPwd = '';
 var user = 'ciaemon';
-var userPwd = 'sqlForgot12';
+var userPwd = '';
 var db = 'ccu';
 
 var root = 'root';

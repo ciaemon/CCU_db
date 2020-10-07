@@ -5,7 +5,8 @@ function getExcelAttachments() {
     for (j = 0; j < messages.length; j++) {
       var attachments = messages[j].getAttachments();
       for (k = 0; k < attachments.length; k++) {
-        importExcel(attachments[k]);
+        var file = importExcel(attachments[k]);
+        file.setDescription(messages[j].getFrom())
       }
     }
     threads[i].markRead();
@@ -39,6 +40,7 @@ function unreadAttachment() {
 function importExcel(attachment) {
   if (attachment.setContentTypeFromExtension().getContentType() == MimeType.MICROSOFT_EXCEL) {
     var destFolder = DriveApp.getFolderById('1wBR0VGLshTd9ocFfEvvAa3pdsejeUFeq');
-    destFolder.createFile(attachment);
+    return destFolder.createFile(attachment);
+    
   }
 }

@@ -14,6 +14,7 @@ function start() {
 }
 
 
+
 function convert(folderId) {
   var folderIncoming = DriveApp.getFolderById(folderId);
   var files = folderIncoming.getFilesByType(MimeType.MICROSOFT_EXCEL);
@@ -27,9 +28,9 @@ function convert(folderId) {
       };
       
     file = Drive.Files.copy(file, sourceId, {convert: true});
-        
+    file.description = source.getDescription();    
     folderIncoming.removeFile(source);
-    SpreadsheetApp.openById(file.driveId).setSpreadsheetTimeZone('Asia/Novosibirsk');
+   
     
     
   }
@@ -46,10 +47,16 @@ function merge(folderId) {
   var count = 0;  
   while (sheetFiles.hasNext()) {
     var currentFile = sheetFiles.next();
+    
+   
+    
+    
     if (!contains(currentFile.getId(), idArray)) {
       var accessType = DriveApp.Access.ANYONE_WITH_LINK;
-      var permissionType = DriveApp.Permission.VIEW;
+      var permissionType = DriveApp.Permission.COMMENT;
       currentFile.setSharing(accessType, permissionType);
+      var timeZone = SpreadsheetApp.getActive().getSpreadsheetTimeZone();
+      SpreadsheetApp.open(currentFile).setSpreadsheetTimeZone(timeZone);
       sheet.appendRow([currentFile.getName(), currentFile.getId(), currentFile.getUrl()]);
       var newRow = sheet.getRange(sheet.getLastRow(), 1, 1, 3);
       newRow.setFontColor('red');
@@ -123,9 +130,14 @@ function sendToCustomer(requestId, type) {
       subject = Utilities.formatString('Ваша заявка с шифром %s успешно внесена в базу', cifer);
       message = Utilities.formatString('Заявка доступна по следующей ссылке %s', url);
       break;
+    case 'archive' :
+      subject = Utilities.formatString('Ваша заявка с шифром %s выполнена', cifer);
+      message = Utilities.formatString('Заявка доступна по следующей ссылке %s', url);
     }
   GmailApp.sendEmail(email, subject, message);  
 }
+
+
 
 
 

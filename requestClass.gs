@@ -11,7 +11,7 @@ function isCompleted(id) {
 
 function getEmail(id) {
   var ss = SpreadsheetApp.openById(id);
-  var range = ss.getSheets()[0].getRange('B1:C30');
+  var range = ss.getSheets()[0].getRange('B2:C30');
   var values = range.getValues();
   for (i = 0; i < values.length; i++) {
     if (values[i][0].indexOf('mail') != -1) {

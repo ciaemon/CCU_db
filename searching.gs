@@ -68,5 +68,4 @@ function displayResults(resultIds) {
 
 function searchAndDisplay() {
   displayResults(searchNew());
-  
 }

@@ -1,4 +1,3 @@
-
 function start() {
   var ssId = SpreadsheetApp.getActive().getId();
   var folderId = requestFolderId;
@@ -48,22 +47,30 @@ function merge(folderId) {
   while (sheetFiles.hasNext()) {
     var currentFile = sheetFiles.next();
     
-    const id = currentFile.getId();
-    const reqObj = parseById(id);
-    const rejectMessage = constructRejectMessage(reqObj);
-    const warnMessage = constructWarnMessage(reqObj);
-    const email = currentFile.getDescription();
-    let message = '';
-    message += rejectMessage === '' ? '' : 'Заявка отклонена по следующим причинам: \n' + rejectMessage;
-    message += warnMessage === '' ? '' : 'Обратите внимание на проблемы в заявке: \n' + warnMessage;
-    if (message !== '') {
-      GmailApp.sendEmail(email, 'В вашей заявке с шифром ' + reqObj.cifer + 'обнаружены проблемы', message);
-    }
-    if (rejectMessage !== '') {
-      continue;
-    }
+
     
     if (!contains(currentFile.getId(), idArray)) {
+      
+      
+//    const id = currentFile.getId();
+//    const reqObj = parseById(id);
+//    const rejectMessage = constructRejectMessage(reqObj);
+//    const warnMessage = constructWarnMessage(reqObj);
+//    const email = currentFile.getDescription();
+//    let message = '';
+//    message += rejectMessage === '' ? '' : 'Заявка отклонена по следующим причинам: \n' + rejectMessage;
+//    message += '\n';
+//    message += warnMessage === '' ? '' : 'Обратите внимание на проблемы в заявке: \n' + warnMessage;
+//    if (message !== '') {
+//      GmailApp.sendEmail(email, 'В вашей заявке с шифром ' + reqObj.probe.cifer + 'обнаружены проблемы', message);
+//    }
+//    if (rejectMessage !== '') {
+//      continue;
+//    }
+//      
+      
+      
+      
       var accessType = DriveApp.Access.ANYONE_WITH_LINK;
       var permissionType = DriveApp.Permission.COMMENT;
       currentFile.setSharing(accessType, permissionType);

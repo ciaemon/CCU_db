@@ -47,6 +47,10 @@ function merge(folderId) {
   var count = 0;  
   while (sheetFiles.hasNext()) {
     var currentFile = sheetFiles.next();
+    
+   
+    
+    
     if (!contains(currentFile.getId(), idArray)) {
       var accessType = DriveApp.Access.ANYONE_WITH_LINK;
       var permissionType = DriveApp.Permission.COMMENT;

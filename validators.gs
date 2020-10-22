@@ -23,26 +23,26 @@ function findBlanks(reqObj) {
   const customer = reqObj.customer;
   let blanks = [];
   for (let key in customer) {
-    if (key !== 'supervisor' && customer[key] === '') {
-      blanks.push(reqNames[key]);
+    if (key !== 'supervisor' && customer[key].length == 0) {
+      blanks.push(reqNames.customer[key]);
     }
   }
   const probe = reqObj.probe;
   for (let key in probe) {
-    if (key !== 'knownCells' && key !== 'desiredCells' && probe[key] === '') {
-      blanks.push(reqNames[key]);
+    if (key !== 'knownCells' && key !== 'desiredCells' && probe[key].length == 0) {
+      blanks.push(reqNames.probe[key]);
     }
   }
   const task = reqObj.task;
   for (let key in task) {
-    if (probe[key] === '') {
-      blanks.push(reqNames[key]);
+    if (task[key].length == 0) {
+      blanks.push(reqNames.task[key]);
     }
   }
   
-  for (let key in probe) {
-    if (typeof reqObj[key] === 'string' && reqObj[key] === '') {
-      blanks.push (reqNames[key]);
+  for (let key in reqObj) {
+    if (typeof reqObj[key] === 'string' && reqObj[key].length == 0) {
+      blanks.push(reqNames[key]);
     }
   }
   return blanks;

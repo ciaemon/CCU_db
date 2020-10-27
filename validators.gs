@@ -41,7 +41,7 @@ function findBlanks(reqObj) {
   }
   
   for (let key in reqObj) {
-    if (typeof reqObj[key] === 'string' && reqObj[key].length == 0) {
+    if (typeof reqObj[key] === 'string' && reqObj[key].length == 0 && key !== 'comment') {
       blanks.push(reqNames[key]);
     }
   }

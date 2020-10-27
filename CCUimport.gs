@@ -44,7 +44,7 @@ function merge(folderId) {
   var lastRow = sheet.getDataRange().getNumRows();
   var idRange = sheet.getRange(1, 2, lastRow);
   var idArray = idRange.getValues();
-  var count = 0;  
+  var count = 0;
   while (sheetFiles.hasNext()) {
     var currentFile = sheetFiles.next();
     
@@ -54,13 +54,13 @@ function merge(folderId) {
       
       
     const id = currentFile.getId();
-    const reqObj = parseById(id);
+    const reqObj = ReqLib.parseById(id);
     const rejectMessage = constructRejectMessage(reqObj);
     const warnMessage = constructWarnMessage(reqObj);
     const email = currentFile.getDescription();
     let message = '';
-    message += rejectMessage.length == 0 ? '' : 'Заявка отклонена и УДАЛЕНА по следующим причинам: \n' + rejectMessage;
-    message += '\n\n';
+    message += rejectMessage.length == 0 ? '' : 'Заявка отклонена и УДАЛЕНА по следующим причинам: \n' + rejectMessage + '\n\n';
+    
     message += warnMessage.length == 0 ? '' : 'Обратите внимание на проблемы в заявке: \n' + warnMessage;
     if (message !== '') {
       GmailApp.sendEmail(email, 'В вашей заявке с шифром ' + reqObj.probe.cifer + ' обнаружены проблемы', message);
@@ -78,7 +78,9 @@ function merge(folderId) {
       var permissionType = DriveApp.Permission.COMMENT;
       currentFile.setSharing(accessType, permissionType);
       var timeZone = SpreadsheetApp.getActive().getSpreadsheetTimeZone();
-      SpreadsheetApp.open(currentFile).setSpreadsheetTimeZone(timeZone);
+      const ss = SpreadsheetApp.open(currentFile);
+      ss.setSpreadsheetTimeZone(timeZone);
+      ss.getSheets()[0].getRange('C25').setShowHyperlink(true);
       sheet.appendRow([currentFile.getName(), currentFile.getId(), currentFile.getUrl()]);
       var newRow = sheet.getRange(sheet.getLastRow(), 1, 1, 3);
       newRow.setFontColor('red');

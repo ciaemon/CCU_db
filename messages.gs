@@ -1,6 +1,6 @@
 const EMAIL_MISMATCH_MESSAGE = 'Email в заявке не совпадает с адресом отправки!\n';
 const INVALID_EMAIL_MESSAGE = 'Email в заявке иммет неверный формат!!! \n';
-const OLD_VERSION_MESSAGE = 'Вы используете устаревшую версию заявки, пожалуйста, скачайте новую версию на heap\n';
+const OLD_VERSION_MESSAGE = 'Вы используете устаревшую версию заявки, пожалуйста, скачайте новую версию V 1.16 на ftp://heap/incoming/520_SCXRD/\n';
 const BLANKS_MESSAGE = 'Заявка содержит пустые поля, обязательные для заполнения: \n';
 /**
 * Constructs message for blanks
@@ -27,25 +27,20 @@ function constructWarnMessage(reqObj) {
     message += EMAIL_MISMATCH_MESSAGE;
   }
   
-//  Проверка на актуальную версию
-  if (!checkVersion(reqObj)) {
-    message += OLD_VERSION_MESSAGE;
-  }
-//  Проверка на пустые поля в старых версиях
-  if (reqObj.version !== LATEST_VERSION) {
-    message += constructMessageBlanks(findBlanks(reqObj));
-  }
   return message;
 }
 
 function constructRejectMessage(reqObj) {
   let message = '';
-  
-  //  Проверка на пустые поля в новых версиях
-  if (reqObj.version === LATEST_VERSION) {
-    message += constructMessageBlanks(findBlanks(reqObj));
+  //  Проверка на актуальную версию
+  if (!checkVersion(reqObj)) {
+    message += OLD_VERSION_MESSAGE;
   }
-  if (!validateEmail(reqObj.customer.email) && reqObj.version === LATEST_VERSION) {
+  //  Проверка на пустые поля в новых версиях
+    message += constructMessageBlanks(findBlanks(reqObj));
+
+
+  if (!validateEmail(reqObj.customer.email)) {
     message += INVALID_EMAIL_MESSAGE;
   }
   return message;

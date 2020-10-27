@@ -65,7 +65,7 @@ function merge(folderId) {
     if (message !== '') {
       GmailApp.sendEmail(email, 'В вашей заявке с шифром ' + reqObj.probe.cifer + ' обнаружены проблемы', message);
     }
-    if (rejectMessage !== '') {
+    if (rejectMessage.length > 0) {
       currentFile.setTrashed(true);
       continue;
     }

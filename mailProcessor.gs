@@ -5,9 +5,12 @@ function getExcelAttachments() {
     for (j = 0; j < messages.length; j++) {
       var attachments = messages[j].getAttachments();
       for (k = 0; k < attachments.length; k++) {
+        if (messages[j].isUnread()) {
         var file = importExcel(attachments[k]);
-        file.setDescription(messages[j].getFrom())
+        }
+        file.setDescription(messages[j].getFrom());
       }
+      messages[j].markRead();
     }
     threads[i].markRead();
     threads[i].moveToArchive();

@@ -47,17 +47,18 @@ const reqNames = {
         storing: 'E27'
     },
     experiment: {
-        date: 'I2',
-        startTime: 'I3',
-        endTime: 'I4',
-        instrument: 'I5',
-        operator: 'I6',
-        samplesNumber: 'I7',
-        result: 'I9',
-        toCustomer: 'I10',
-        crystallographer: 'I11',
-        folder: 'I12',
-        storing: 'I13'
+      date: 'I2',
+      startTime: 'I3',
+      endTime: 'I4',
+      instrument: 'I5',
+      operator: 'I6',
+      samplesNumber: 'I7',
+      result: 'I9',
+      toCustomer: 'I10',
+      crystallographer: 'I11',
+      folder: 'I13',
+      storing: 'I14',
+      comment: 'H16' 
     },
 };
 /**
@@ -118,8 +119,9 @@ const req = {
         result: 'I9',
         toCustomer: 'I10',
         crystallographer: 'I11',
-        folder: 'I12',
-        storing: 'I13'
+        folder: 'I13',
+        storing: 'I14',
+      comment: 'H16'
     },
 };
 
@@ -150,6 +152,7 @@ function parseById(id) {
   const sheet = SpreadsheetApp.openById(id).getSheets()[0];
   let obj = parseSheet(sheet, req);
   obj.id = id;
+  obj.link = DriveApp.getFileById(id).getUrl();
   return obj;
 }
 

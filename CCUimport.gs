@@ -61,7 +61,7 @@ function merge(folderId) {
     let message = '';
     message += rejectMessage.length == 0 ? '' : 'Заявка отклонена и УДАЛЕНА по следующим причинам: \n' + rejectMessage + '\n\n';
     
-    message += warnMessage.length == 0 ? '' : 'Обратите внимание на проблемы в заявке: \n' + warnMessage;
+    message += (warnMessage.length == 0 && rejectMessage.length == 0) ? '' : 'Обратите внимание на проблемы в заявке: \n' + warnMessage;
     if (message !== '') {
       GmailApp.sendEmail(email, 'В вашей заявке с шифром ' + reqObj.probe.cifer + ' обнаружены проблемы', message);
     }
@@ -80,6 +80,8 @@ function merge(folderId) {
       var timeZone = SpreadsheetApp.getActive().getSpreadsheetTimeZone();
       const ss = SpreadsheetApp.open(currentFile);
       ss.setSpreadsheetTimeZone(timeZone);
+      const linkRange = ss.getSheets()[0].getRange('C25');
+      
       ss.getSheets()[0].getRange('C25').setShowHyperlink(true);
       sheet.appendRow([currentFile.getName(), currentFile.getId(), currentFile.getUrl()]);
       var newRow = sheet.getRange(sheet.getLastRow(), 1, 1, 3);
@@ -136,6 +138,16 @@ function updateRequest() {
   }
 }
 
+function getFolderFilesNumber(folder) {
+  const files = folder.getFilesByType(MimeType.GOOGLE_SHEETS);
+  let counter = 0;
+  while (files.hasNext()) {
+    files.next();
+    counter++;
+  }
+  return counter;
+}
+
 function sendToCustomer(requestId, type) {
   var sheet = SpreadsheetApp.openById(requestId).getSheets()[0];
   var cifer = sheet.getRange('E3').getValue();
@@ -152,13 +164,21 @@ function sendToCustomer(requestId, type) {
       break;
     case 'first' :
       subject = Utilities.formatString('Ваша заявка с шифром %s успешно внесена в базу', cifer);
+      const currentNumber = getFolderFilesNumber(DriveApp.getFolderById(requestFolderId));
       message = Utilities.formatString('Заявка доступна по следующей ссылке %s', url);
+      message += '\n Заявок в очереди на данный момент: ' + currentNumber;
       break;
     case 'archive' :
       subject = Utilities.formatString('Ваша заявка с шифром %s выполнена', cifer);
       message = Utilities.formatString('Заявка доступна по следующей ссылке %s', url);
     }
   GmailApp.sendEmail(email, subject, message);  
+}
+
+
+function ttt() {
+  sendToCustomer('1YloT8Ydy2ghXdC4NVhkkwUDmr-ieafEtFX5iDV142T4', 'first');
+  
 }
 
 

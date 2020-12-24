@@ -2,8 +2,8 @@
 * Проверка - выполнена ли заявка
 */
 function isCompleted(id) {
-  var endTime = SpreadsheetApp.openById(id).getSheets()[0].getRange('I4').getValue();
-  if (endTime != '') { return true; }
+  var endTime = SpreadsheetApp.openById(id).getSheets()[0].getRange('I4').getDisplayValue();
+  if (endTime != '-' && endTime.length != 0) { return true; }
   return false;
  
 }

@@ -1,5 +1,5 @@
-const EMAIL_MISMATCH_MESSAGE = 'Email в заявке не совпадает с адресом отправки!\n';
-const INVALID_EMAIL_MESSAGE = 'Email в заявке иммет неверный формат!!! \n';
+const EMAIL_MISMATCH_MESSAGE = 'Email в заявке не совпадает с адресом отправки\n';
+const INVALID_EMAIL_MESSAGE = 'Email в заявке имеет неверный формат!!! \n';
 const OLD_VERSION_MESSAGE = 'Вы используете устаревшую версию заявки, пожалуйста, скачайте новую версию V 1.16 на ftp://heap/incoming/520_SCXRD/\n';
 const BLANKS_MESSAGE = 'Заявка содержит пустые поля, обязательные для заполнения: \n';
 /**
@@ -25,6 +25,12 @@ function constructWarnMessage(reqObj) {
   var email = DriveApp.getFileById(reqObj.id).getDescription();
   if (email.indexOf(reqObj.customer.email) < 0) {
     message += EMAIL_MISMATCH_MESSAGE;
+    message += 'Email в заявке: ' + reqObj.customer.email + '\n';
+    message += 'Email отправки: ' + email + '\n';
+    
+    message += 'Вся дальнейшая корреспонденция будет отправлена на ' + reqObj.customer.email + ' \n\n';
+    message += 'Если это сделано ненамеренно, для исправления обратитесь к Комарову Владиславу\n';
+    
   }
   
   return message;
@@ -46,10 +52,6 @@ function constructRejectMessage(reqObj) {
   return message;
 }
 
-function tst1() {
-  const reqObj = parseById('1NkGMu0-KoMK-y0w4M7if3fDR2UIFCubuOUUFdhQbrBc');
-  console.log('WARN: \n' + constructWarnMessage(reqObj));
-  console.log('REJECT: \n' + constructRejectMessage(reqObj));
-}
+
 
 

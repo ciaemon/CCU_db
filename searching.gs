@@ -33,7 +33,7 @@ function searchNew() {
     }
   }
 if (isCurrentSearch()) {
-    var files = DriveApp.getFolderById(requestFolderId).getFiles();
+    var files = DriveApp.getFolderById(requestFolderId).getFilesByType(MimeType.GOOGLE_SHEETS);
     while (files.hasNext()) {
       var fileId = files.next().getId();
       if (isResult(fileId, query, field)) {
